@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Level 22 💙</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* stars background */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+  0%,100% {opacity: 0.3;}
+  50% {opacity: 1;}
+}
+
+.container {
+  margin-top: 100px;
+  position: relative;
+  z-index: 1;
+}
+
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 20px;
+  background: #1e90ff;
+  color: white;
+  cursor: pointer;
+}
+
+/* moving star */
+#gameStar {
+  font-size: 40px;
+  position: absolute;
+  display: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 9999; 
+}
+
+/* love letter */
+#letter {
+  display: none;
+  width: 80%;
+  margin: auto;
+  margin-top: 20px;
+  font-size: 18px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🌌 Level 22 Unlocked 💙</h1>
+  <p>Hey my favorite human ☁️</p>
+  <button onclick="startGame()">Start your surprise 🎮</button>
+
+  <div id="letter"></div>
+</div>
+
+<div id="gameStar">⭐</div>
+
+<audio id="song" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* background stars */
+for(let i=0; i<100; i++){
+  let s = document.createElement("div");
+  s.className = "star";
+  s.style.top = Math.random()*100 + "%";
+  s.style.left = Math.random()*100 + "%";
+  document.body.appendChild(s);
+}
+
+/* game logic */
+let score = 0;
+let gameStarted = false;
+const star = document.getElementById("gameStar");
+
+function startGame(){
+  if(gameStarted) return;
+  gameStarted = true;
+
+  star.style.display = "block";
+  moveStar();
+}
+
+function moveStar(){
+  let x = Math.random() * (window.innerWidth - 60);
+  let y = Math.random() * (window.innerHeight - 60);
+
+  star.style.left = x + "px";
+  star.style.top = y + "px";
+}
+
+/* click star */
+star.addEventListener("click", function(){
+  score++;
+
+  star.style.transform = "scale(1.4)";
+  setTimeout(() => {
+    star.style.transform = "scale(1)";
+  }, 100);
+
+  if(score >= 5){
+    star.style.display = "none";
+    startLetter();
+  } else {
+    setTimeout(moveStar, 300);
+  }
+});
+
+/* typing letter */
+let text = `Happy 22nd Birthday my love 💙
+
+You are my honey bunny sugar plum 😹
+
+You are literally the cutest human alive.
+And somehow... you still get cuter every day.
+
+You make my world feel soft and safe,
+like floating in the sky ☁️
+
+I wish I could give you the whole universe,
+but for now... I made you this 🥺
+hhmm maybe yoosu satisfied avvulla pashe njan 
+koore effort edthitt nd innk ingane okkeya ipo 
+cheyan patullu innk anne koore koore ishtaa
+I love you more than words can ever explain 💙`;
+
+let i = 0;
+
+function startLetter(){
+  document.getElementById("letter").style.display = "block";
+
+  let audio = document.getElementById("song");
+
+  audio.play().then(() => {
+    console.log("playing");
+  }).catch(() => {
+    document.body.addEventListener("click", () => {
+      audio.play();
+    }, { once: true });
+  });
+
+  typeWriter();
+}
+function typeWriter(){
+  if(i < text.length){
+    document.getElementById("letter").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeWriter, 40);
+  }
+}
+
+</script>
+
+</body>
+</html>
